@@ -1,0 +1,11 @@
+# INCLUDE bin/**/*
+# INCLUDE lib/**/*
+# INCLUDE *
+# EXCLUDE **/.DS_Store
+# EXCLUDE .rarity
+
+cache.gemspec
+lib/cache.rb
+Manifest
+README.md
+version.txt
