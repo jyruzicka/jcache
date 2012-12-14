@@ -4,6 +4,7 @@
 # EXCLUDE **/.DS_Store
 # EXCLUDE .rarity
 
+bin/cache
 cache.gemspec
 lib/cache.rb
 Manifest

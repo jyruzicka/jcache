@@ -1,11 +1,21 @@
 require 'json'
 
+# The Cache class is the basis of Cache. It stores data persistantly in a series
+# of JSON files in a location specified by CACHE_LOCATION.
 class Cache
   # Where the cache is located
   CACHE_LOCATION = File.join(ENV['HOME'], '.cache')
 
   # The name of this particular cache
   attr_accessor :name
+
+  # The data hash itself
+  attr_reader :data
+
+  # Returns an array of all caches 
+  def self.all foo, bar
+    return Dir[File.join(CACHE_LOCATION, "*.json")].map{ |f| File.basename(f,'.json') }
+  end
 
   # Retrieve a new cache from file
   def initialize name

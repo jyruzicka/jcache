@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   
   s.files = File.read('Manifest').split("\n").select{ |l| !l.start_with?('#') && l != ''}
   s.require_paths << 'lib'
-  # s.bindir = 'bin'
-  # s.executables << 'cache'
+  s.bindir = 'bin'
+  s.executables << 'cache'
   s.extra_rdoc_files = ['README.md']
 
   # Add runtime dependencies here
