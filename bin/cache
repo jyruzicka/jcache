@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require 'cache'
+
+USAGE_STRING = <<-end
+Usage:
+  cache
+  cache KEY
+
+Without an argument, cache will display all databases currently in use.
+
+With an argument, cache will retrieve the desired database and display is to STDOUT.
+end
+
+case ARGV.size
+when 0
+  puts "Current JSON caches:"
+  puts Cache::all.map{ |str| "* #{str}" }.join("\n")
+when 1
+  c = Cache.new ARGV.shift
+  if c.empty?
+    puts "Cache #{c} is empty/nonexistant."
+  else
+    puts "Contents of cache #{c}:"
+    puts c.data.inspect
+  end
+else
+  puts USAGE_STRING
+end
