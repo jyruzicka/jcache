@@ -13,7 +13,7 @@ class Cache
   attr_reader :data
 
   # Returns an array of all caches 
-  def self.all foo, bar
+  def self.all
     return Dir[File.join(CACHE_LOCATION, "*.json")].map{ |f| File.basename(f,'.json') }
   end
 
@@ -51,6 +51,11 @@ class Cache
     else
       super sym, *args, &blck
     end
+  end
+
+  # To_string uses cache name
+  def to_s
+    name
   end
 
   private

@@ -22,7 +22,8 @@ when 1
     puts "Cache #{c} is empty/nonexistant."
   else
     puts "Contents of cache #{c}:"
-    puts c.data.inspect
+    puts ""
+    puts JSON::pretty_generate c.data
   end
 else
   puts USAGE_STRING
