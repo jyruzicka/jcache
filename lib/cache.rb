@@ -61,14 +61,14 @@ class Cache
   def initialize name
     @name = name
 
-    @data = if file_exists?
+    if file_exists?
       begin
-        YAML::load_file(file)
+        @data =YAML::load_file(file)
       rescue
         raise $! if Cache::behaviour_on_corrupt_file == :error
       end
     end
-
+    
     @data ||= {}
   end
 
