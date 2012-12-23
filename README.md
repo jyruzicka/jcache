@@ -2,7 +2,18 @@
 
 Cache is very simple. Use `Cache` instances like hashes, and save/load them as you wish.
 
+    c = Cache.new('foo') # or Cache['foo']
+    c[:key] = 3
+    c.save
+
+    d = Cache.new('foo') # the same cache!
+    d[:key] #=> 3
+
 ## History
+
+### 0.2.0 / 2012-12-23
+
+* [NEW] Switched to YAML storage - allows for symbols!
 
 ### 0.1.2 / 2012-12-23
 

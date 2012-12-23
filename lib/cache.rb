@@ -1,10 +1,42 @@
-require 'json'
+require 'yaml'
 
 # The Cache class is the basis of Cache. It stores data persistantly in a series
-# of JSON files in a location specified by CACHE_LOCATION.
+# of YAML files in a location specified by CACHE_LOCATION.
 class Cache
-  # Where the cache is located
-  CACHE_LOCATION = File.join(ENV['HOME'], '.cache')
+
+  # The extension for all files created by Cache
+  EXT = 'yaml'
+
+  class << self
+    # Set where the cache is located
+    attr_writer :cache_location
+
+    # Where the cache is located. Set to ~/.cache by default
+    def cache_location
+      @cache_location || File.join(ENV['HOME'], '.cache')
+    end
+
+    # Makes sure the cache folder exists, and creates it if it doesn't
+    def ensure_cache_exists
+      Dir.mkdir(cache_location) unless File.exists?(cache_location)
+    end
+
+    # Set what Cache should do if the database file is corrupt.
+    # Valid choices are:
+    # * :error - raise an exception
+    # * :overwrite - create a blank database file and overwrite on save
+    def behaviour_on_corrupt_file= behaviour
+      unless [:error, :overwrite].include? behaviour
+        raise ArgumentError, "Cache::behaviour_on_corrupt_file takes :error or :overwrite as arguments, you gave it #{behaviour}."
+      end
+      @behaviour_on_corrupt_file = behaviour
+    end
+
+    # Behaviour if a database file is corrupt. Default is :overwrite
+    def behaviour_on_corrupt_file
+      @behaviour_on_corrupt_file || :overwrite
+    end
+  end
 
   # The name of this particular cache
   attr_accessor :name
@@ -14,7 +46,7 @@ class Cache
 
   # Returns an array of all caches 
   def self.all
-    return Dir[File.join(CACHE_LOCATION, "*.json")].map{ |f| File.basename(f,'.json') }
+    return Dir[File.join(CACHE_LOCATION, "*.#{EXT}")].map{ |f| File.basename(f,".#{EXT}") }
   end
 
   # The same as Cache.new(name)
@@ -22,31 +54,38 @@ class Cache
     new(name)
   end
 
-  # Retrieve a new cache from file
+  # Retrieve a new cache from file. If the file appears corrupt,
+  # Cache will issue an error message and initialize a blank hash.
+  # To change this behaviour, you may wish to set Cache::override_on_error
+  # or Cache::break_on_error
   def initialize name
     @name = name
 
-    @data = if json_file_exists?
-      JSON::parse(File.read(json_file))
-    else
-      {}
+    @data = if file_exists?
+      begin
+        YAML::load_file(file)
+      rescue
+        raise $! if Cache::behaviour_on_corrupt_file == :error
+      end
     end
+
+    @data ||= {}
   end
 
-  # Location of cache json file
-  def json_file
-    @json_file ||= File.join(CACHE_LOCATION, "#{@name}.json")
+  # Location of cache file
+  def file
+    @file ||= File.join(CACHE_LOCATION, "#{@name}.#{EXT}")
   end
 
-  # Does the json file exist yet?
-  def json_file_exists?
-    File.exists?(json_file)
+  # Does the file exist yet?
+  def file_exists?
+    File.exists?(file)
   end
 
   # Save this cache to file
   def save
-    ensure_dir_exists
-    File.open(json_file,'w'){ |io| io.puts(JSON::pretty_generate @data) }
+    Cache::ensure_cache_exists
+    File.open(file,'w'){ |io| io.puts YAML::dump(@data) }
   end
 
   # For everything else, there's method_missing
@@ -58,15 +97,8 @@ class Cache
     end
   end
 
-  # To_string uses cache name
+  # Returns the cache's name
   def to_s
     name
-  end
-
-  private
-
-  # Ensure our cache directory exists
-  def ensure_dir_exists
-    Dir.mkdir(CACHE_LOCATION) unless File.exists?(CACHE_LOCATION)
   end
 end

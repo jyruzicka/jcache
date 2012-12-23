@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'yaml'
 require 'cache'
 
 USAGE_STRING = <<-end
