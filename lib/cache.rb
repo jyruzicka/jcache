@@ -17,6 +17,11 @@ class Cache
     return Dir[File.join(CACHE_LOCATION, "*.json")].map{ |f| File.basename(f,'.json') }
   end
 
+  # The same as Cache.new(name)
+  def self.[] name
+    new(name)
+  end
+
   # Retrieve a new cache from file
   def initialize name
     @name = name

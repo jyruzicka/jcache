@@ -1,5 +1,6 @@
 #!/usr/bin/env ruby
 
+require 'yaml'
 require 'cache'
 
 USAGE_STRING = <<-end
@@ -23,7 +24,7 @@ when 1
   else
     puts "Contents of cache #{c}:"
     puts ""
-    puts JSON::pretty_generate c.data
+    puts YAML::dump c.data
   end
 else
   puts USAGE_STRING
