@@ -46,7 +46,7 @@ class Cache
 
   # Returns an array of all caches 
   def self.all
-    return Dir[File.join(CACHE_LOCATION, "*.#{EXT}")].map{ |f| File.basename(f,".#{EXT}") }
+    return Dir[File.join(Cache::cache_location, "*.#{EXT}")].map{ |f| File.basename(f,".#{EXT}") }
   end
 
   # The same as Cache.new(name)
@@ -74,7 +74,7 @@ class Cache
 
   # Location of cache file
   def file
-    @file ||= File.join(CACHE_LOCATION, "#{@name}.#{EXT}")
+    @file ||= File.join(Cache::cache_location, "#{@name}.#{EXT}")
   end
 
   # Does the file exist yet?
