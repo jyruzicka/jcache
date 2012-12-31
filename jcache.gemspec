@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = "cache"
+  s.name = "jcache"
   s.version = File.read('version.txt')
   
   s.summary = "Cache and restore data as hashes."
@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   
   s.author = 'Jan-Yves Ruzicka'
   s.email = 'janyves.ruzicka@gmail.com'
-  s.homepage = 'https://github.com/jyruzicka/cache'
+  s.homepage = 'https://github.com/jyruzicka/jcache'
   
   s.files = File.read('Manifest').split("\n").select{ |l| !l.start_with?('#') && l != ''}
   s.require_paths << 'lib'

@@ -5,8 +5,8 @@
 # EXCLUDE .rarity
 
 bin/cache
-cache.gemspec
-lib/cache.rb
+jcache.gemspec
+lib/jcache.rb
 Manifest
 README.md
 version.txt
