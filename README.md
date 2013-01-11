@@ -11,6 +11,10 @@ JCache is very simple. Use `JCache::Cache` instances like hashes, and save/load 
 
 ## History
 
+### 1.0.1 / 2013-01-12
+
+* [FIXED] Binary should work again
+
 ### 1.0.0 / 2013-01-01
 
 * [FIXED] Now uses the JCache namespace, so as not to collide with the `cache` gem. Renamed to JCache
